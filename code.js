@@ -1,6 +1,8 @@
 var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json"
 var imgs = [];
+var version = "0.1";
 
+console.log("version: " + version);
 
 fetch(url)
   .then(function(res) {
