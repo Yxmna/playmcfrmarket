@@ -11,6 +11,11 @@ fetch(url)
     // db.sort(function(a, b) {
     //   return a.gsx$ID.$t - b.gsx$ID.$t;
     // });
+    base.sort(function(a, b) {
+      if (a.gsx$nomproduit.$t.toUpperCase() < b.gsx$nomproduit.$t.toUpperCase()) return -1;
+      if (a.gsx$nomproduit.$t.toUpperCase() > b.gsx$nomproduit.$t.toUpperCase()) return 1;
+      return 0;
+    });
     pre();
     load();
   });
