@@ -1,7 +1,9 @@
 var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json"
 var imgs = [];
-var version = "0.1";
-
+var version = "0.2";
+var prices = [];
+var shops = [];
+var types = [];
 console.log("version: " + version);
 
 fetch(url)
@@ -24,7 +26,6 @@ fetch(url)
 
 function pre() {
   base.forEach((item, i) => {
-    console.log(item.gsx$id.$t);
     var img = new Image();
     img.src = "https://yxmna.github.io/mcitems/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
     img.src = "https://yxmna.github.io/mcitems/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
@@ -33,15 +34,37 @@ function pre() {
     };
     imgs[item.gsx$id.$t] = img;
   });
-  console.log(imgs);
 }
 
 function load(name) {
+  document.getElementById("items").innerHTML = "";
 
+  prices, types, shops = [];
   var db = base;
   if (name) db = db.filter(item => item.gsx$nomproduit.$t.toLowerCase().includes(name));
+  if (document.getElementById("prices").value) db = db.filter(item => item.gsx$nomprix.$t.includes(document.getElementById("prices").value));
+  if (document.getElementById("shops").value) db = db.filter(item => item.gsx$commerce.$t.includes(document.getElementById("shops").value));
+  if (document.getElementById("types").value) db = db.filter(item => item.gsx$typevente.$t.includes(document.getElementById("types").value));
+
 
   db.forEach((item, i) => {
+
+    if (!types.includes(item.gsx$typevente.$t) && item.gsx$typevente.$t) {
+      types.push(item.gsx$typevente.$t);
+    }
+
+    if (!shops.includes(item.gsx$commerce.$t) && item.gsx$commerce.$t) {
+      shops.push(item.gsx$commerce.$t);
+    }
+
+
+    if (!prices.includes(item.gsx$nomprix.$t) && item.gsx$nomprix.$t) {
+      prices.push(item.gsx$nomprix.$t);
+    }
+
+
+
+
 
     var article = document.createElement("article");
     var img = document.createElement("img");
@@ -61,13 +84,20 @@ function load(name) {
 
 
     title.innerHTML = item.gsx$quantiteproduit.$t + " " + item.gsx$nomproduit.$t;
-    price.innerHTML = item.gsx$quantiteprix.$t + " ";
-    img_price.src = "https://yxmna.github.io/mcitems/" + item.gsx$nameprice.$t.toLowerCase().split(" ").join("_") + ".png";
-    line1.innerHTML = item.gsx$commerce.$t;
-    line2.innerHTML = item.gsx$proprietaire.$t + ", shop " + item.gsx$typevente.$t.toLowerCase();
 
-    price.appendChild(img_price);
-    price.innerHTML = price.innerHTML + " " + item.gsx$nomprix.$t;
+
+    line1.innerHTML = item.gsx$commerce.$t;
+    line2.innerHTML = item.gsx$proprietaire.$t + ", " + item.gsx$typevente.$t.toLowerCase();
+
+
+    if (item.gsx$quantiteprix.$t == 0) {
+      price.innerHTML = "Gratuit";
+    } else {
+      price.innerHTML = item.gsx$quantiteprix.$t + " ";
+      img_price.src = "https://yxmna.github.io/mcitems/" + item.gsx$nameprice.$t.toLowerCase().split(" ").join("_") + ".png";
+      price.appendChild(img_price);
+      price.innerHTML = price.innerHTML + " " + item.gsx$nomprix.$t;
+    }
 
     img.id = item.gsx$id.$t;
     img.onclick = async function() {
@@ -91,10 +121,31 @@ function load(name) {
 
   });
 
+  if (document.getElementById("prices").length == 1) {
+
+    prices.forEach((item, i) => {
+      var option = document.createElement("option");
+      option.innerHTML = item;
+      option.value = item;
+      document.getElementById("prices").appendChild(option);
+    });
+    shops.forEach((item, i) => {
+      var option = document.createElement("option");
+      option.innerHTML = item;
+      option.value = item;
+      document.getElementById("shops").appendChild(option);
+    });
+    types.forEach((item, i) => {
+      var option = document.createElement("option");
+      option.innerHTML = item;
+      option.value = item;
+      document.getElementById("types").appendChild(option);
+    });
+  }
+
 }
 
 function search() {
-  document.getElementById("items").innerHTML = "";
   load(document.getElementById("search").value.toLowerCase());
 }
 

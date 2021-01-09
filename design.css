@@ -27,6 +27,7 @@
   font-weight: 400;
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 body {
@@ -37,10 +38,12 @@ body {
 header {
   background-color: #21252B;
   margin: 0;
-  display: flex;
   border-right: solid 1px #1F2228;
   position: relative;
   min-width: 300px;
+  padding-left: 150px;
+  position: fixed;
+  height: 100%;
 }
 
 header h1 {
@@ -50,8 +53,53 @@ header h1 {
   margin: 10px 20px 0px 20px;
 }
 
+header h3 {
+  color: white;
+  font-weight: 300;
+  font-size: 23px;
+  margin: 30px 20px 10px 20px;
+}
+
+.select_div {
+  display: inline-block;
+}
+
+.select_div select {
+  background-color: #24292E;
+  border: none;
+  -webkit-appearance: none;
+  color: white;
+  border-radius: 5px;
+  padding: 0 40px 0 10px;
+  transform: translateY(-2px);
+  height: 33px;
+}
+
+.select_div::before {
+  position: relative;
+  content: "";
+  top: 14px;
+  left: calc(102% - 27px);
+  border: 6px solid transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-color: #fff transparent transparent transparent;
+  z-index: 1;
+}
+
 #content {
-  /* width: 80%; */
+  margin-left: 451px;
+  width: 100%;
+}
+
+#items {
+  width: 90%;
 }
 
 #search_area {
@@ -77,23 +125,30 @@ article {
   color: #829A9C;
   text-align: center;
   margin: 20px;
-  width: 200px;
   padding: 10px;
+  width: 225px;
+}
+
+article>* {
+  margin-top: 5px;
 }
 
 article>img {
   cursor: pointer;
-  height: 100px;
+  height: 125px;
   filter: drop-shadow(9px 11px 7px rgba(0, 0, 0, .125));
+}
+
+article h2, article h3, article h4 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 article h2 {
   cursor: pointer;
   color: white;
   font-size: 20px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
   width: 85%;
   font-weight: 500;
   margin-left: auto;
