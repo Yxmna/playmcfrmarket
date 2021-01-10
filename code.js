@@ -1,6 +1,6 @@
 var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json"
 var imgs = [];
-var version = "0.2";
+var version = "0.3";
 var prices = [];
 var shops = [];
 var types = [];
@@ -41,7 +41,9 @@ function load(name) {
 
   prices, types, shops = [];
   var db = base;
-  if (name) db = db.filter(item => item.gsx$nomproduit.$t.toLowerCase().includes(name));
+  if (name) db = db.filter(item => {
+    if (item.gsx$nomproduit.$t.toLowerCase().includes(name) || item.gsx$productname.$t.toLowerCase().includes(name)) return item;
+  });
   if (document.getElementById("prices").value) db = db.filter(item => item.gsx$nomprix.$t.includes(document.getElementById("prices").value));
   if (document.getElementById("shops").value) db = db.filter(item => item.gsx$commerce.$t.includes(document.getElementById("shops").value));
   if (document.getElementById("types").value) db = db.filter(item => item.gsx$typevente.$t.includes(document.getElementById("types").value));
