@@ -1,10 +1,19 @@
-var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json"
+var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json";
 var imgs = [];
 var version = "0.3";
 var prices = [];
 var shops = [];
 var types = [];
+var fr = new Object;
 console.log("version: " + version);
+
+fetch("https://yxmna.github.io/mcapi/lang/fr_FR.json").then(function(response) {
+  return response.json();
+}).then(function(obj) {
+  fr = obj;
+});
+
+
 
 fetch(url)
   .then(function(res) {
@@ -27,10 +36,10 @@ fetch(url)
 function pre() {
   base.forEach((item, i) => {
     var img = new Image();
-    img.src = "https://yxmna.github.io/mcitems/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
-    img.src = "https://yxmna.github.io/mcitems/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
+    img.src = "https://yxmna.github.io/mcapi/img/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
+    img.src = "https://yxmna.github.io/mcapi/img/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
     img.onerror = function() {
-      img.src = "https://yxmna.github.io/mcitems/missing.png";
+      img.src = "https://yxmna.github.io/mcapi/img/missing.png";
     };
     imgs[item.gsx$id.$t] = img;
   });
@@ -78,9 +87,9 @@ function load(name) {
     var br = document.createElement("br");
 
     img = imgs[item.gsx$id.$t];
-    // img.src = "https://yxmna.github.io/mcitems/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
+    // img.src = "https://yxmna.github.io/mcapi/img/" + item.gsx$productname.$t.toLowerCase().split(" ").join("_") + ".png";
     // img.onerror = function() {
-    //   img.src = "https://yxmna.github.io/mcitems/missing.png";
+    //   img.src = "https://yxmna.github.io/mcapi/img/missing.png";
     // };
 
 
@@ -96,7 +105,7 @@ function load(name) {
       price.innerHTML = "Gratuit";
     } else {
       price.innerHTML = item.gsx$quantiteprix.$t + " ";
-      img_price.src = "https://yxmna.github.io/mcitems/" + item.gsx$nameprice.$t.toLowerCase().split(" ").join("_") + ".png";
+      img_price.src = "https://yxmna.github.io/mcapi/img/" + item.gsx$nameprice.$t.toLowerCase().split(" ").join("_") + ".png";
       price.appendChild(img_price);
       price.innerHTML = price.innerHTML + " " + item.gsx$nomprix.$t;
     }
