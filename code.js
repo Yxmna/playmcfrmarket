@@ -1,6 +1,6 @@
 var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json";
 var imgs = [];
-var version = "0.3";
+var version = "0.4";
 var prices = [];
 var shops = [];
 var types = [];
