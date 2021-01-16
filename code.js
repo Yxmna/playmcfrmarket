@@ -1,6 +1,6 @@
 var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json";
 var imgs = [];
-var version = "0.4";
+var version = "0.5";
 var prices = [];
 var shops = [];
 var types = [];
@@ -11,46 +11,50 @@ var tools = ["Sword", "Axe", "Shovel", "Hoe", "Trident", "Bow", "Crossbow", "Pic
 
 console.log("version: " + version);
 
-fetch("https://yxmna.github.io/mcapi/lang/fr_fr_simply.json").then(function(response) {
-  return response.json();
-}).then(function(obj) {
-  fr = obj;
-});
 
-fetch("https://yxmna.github.io/mcapi/lang/en_us_simply.json").then(function(response) {
-  return response.json();
-}).then(function(obj) {
-  en = obj;
-});
+function init() {
 
-fetch(url)
-  .then(function(res) {
-    return res.json();
-  })
-  .then(function(obj) {
-    base = obj.feed.entry;
-    // db.sort(function(a, b) {
-    //   return a.gsx$ID.$t - b.gsx$ID.$t;
-    // });
-    base.sort(function(a, b) {
-      if (fr[a.gsx$produit.$t.split(" ").join("_").toLowerCase()] < fr[b.gsx$produit.$t.split(" ").join("_").toLowerCase()]) return -1;
-      if (fr[a.gsx$produit.$t.split(" ").join("_").toLowerCase()] > fr[b.gsx$produit.$t.split(" ").join("_").toLowerCase()]) return 1;
-      // if (a.gsx$id.$t < b.gsx$id.$t) return -1;
-      // if (a.gsx$id.$t > b.gsx$id.$t) return 1;
-      return 0;
+  fetch("https://yxmna.github.io/mcapi/lang/fr_fr_simply.json").then(function(response) {
+    return response.json();
+  }).then(function(obj) {
+    fr = obj;
+    fetch("https://yxmna.github.io/mcapi/lang/en_us_simply.json").then(function(response) {
+      return response.json();
+    }).then(function(obj) {
+      en = obj;
+      fetch(url)
+        .then(function(res) {
+          return res.json();
+        })
+        .then(function(obj) {
+          base = obj.feed.entry;
+          // db.sort(function(a, b) {
+          //   return a.gsx$ID.$t - b.gsx$ID.$t;
+          // });
+          base.sort(function(a, b) {
+            if (fr[a.gsx$produit.$t.split(" ").join("_").toLowerCase()] < fr[b.gsx$produit.$t.split(" ").join("_").toLowerCase()]) return -1;
+            if (fr[a.gsx$produit.$t.split(" ").join("_").toLowerCase()] > fr[b.gsx$produit.$t.split(" ").join("_").toLowerCase()]) return 1;
+            // if (a.gsx$id.$t < b.gsx$id.$t) return -1;
+            // if (a.gsx$id.$t > b.gsx$id.$t) return 1;
+            return 0;
+          });
+          pre();
+          load();
+        });
     });
-    pre();
-    load();
   });
+
+
+
+
+}
 
 
 
 // --------------------------------------------------------------------------------------------------------PRELOAD
 function pre() {
-  document.getElementById("search").value = "";
   base.forEach((item, i) => {
     var img = new Image();
-    console.log(item.gsx$produit.$t);
     if (String(tools).includes(item.gsx$produit.$t.split(" ").pop()) && item.gsx$caracteristique.$t) {
       img.src = "https://yxmna.github.io/mcapi/img/enchanted_" + en[item.gsx$produit.$t.toLowerCase().split(" ").join("_")].split(" ").join("_").toLowerCase() + ".png";
     } else {
@@ -68,6 +72,8 @@ function pre() {
 function load(name) {
   document.getElementById("items").innerHTML = "";
 
+  if (document.getElementById("search").value) var name = document.getElementById("search").value;
+
   prices, types, shops = [];
   var db = base;
   if (name) db = db.filter(item => {
@@ -77,6 +83,14 @@ function load(name) {
       if (item.gsx$produit.$t.toLowerCase().includes(name)) return item;
     }
   });
+
+  if (document.getElementById("filter").value == "lower") {
+    db.sort((item1, item2) => ((item1.gsx$quantiteprix.$t * countPrice(item1.gsx$nameprice.$t)) / item1.gsx$quantiteproduit.$t) - ((item2.gsx$quantiteprix.$t * countPrice(item2.gsx$nameprice.$t)) / item2.gsx$quantiteproduit.$t));
+  }
+
+  if (document.getElementById("filter").value == "upper") {
+    db.sort((item2, item1) => ((item1.gsx$quantiteprix.$t * countPrice(item1.gsx$nameprice.$t)) / item1.gsx$quantiteproduit.$t) - ((item2.gsx$quantiteprix.$t * countPrice(item2.gsx$nameprice.$t)) / item2.gsx$quantiteproduit.$t));
+  }
 
   if (document.getElementById("prices").value) db = db.filter(item => item.gsx$nomprix.$t.includes(document.getElementById("prices").value));
   if (document.getElementById("shops").value) db = db.filter(item => item.gsx$commerce.$t.includes(document.getElementById("shops").value));
@@ -118,11 +132,6 @@ function load(name) {
       }
       title.innerHTML = item.gsx$quantiteproduit.$t + " " + fr[item.gsx$produit.$t.split(" ").join("_").toLowerCase() + ".effect." + extra1.join("_").toLowerCase()] + " " + extra2;
 
-    } else if (tools.includes(item.gsx$produit.$t) && item.gsx$caracteristique) {
-
-
-
-
 
     } else if ("Filled Map".includes(item.gsx$produit.$t) && item.gsx$caracteristique) {
 
@@ -134,8 +143,8 @@ function load(name) {
       }
 
 
-      console.log(extra1);
-      console.log(extra2);
+      // console.log(extra1);
+      // console.log(extra2);
       title.innerHTML = item.gsx$quantiteproduit.$t + " " + fr[item.gsx$produit.$t.split(" ").join("_").toLowerCase()] + " " + item.gsx$caracteristique.$t;
 
 
@@ -174,6 +183,16 @@ function load(name) {
     }
 
     article.classList.add(item.gsx$produit.$t.split(" ").join("_").toLowerCase());
+    article.setAttribute("count", (item.gsx$quantiteprix.$t * countPrice(item.gsx$nameprice.$t)) / item.gsx$quantiteproduit.$t);
+
+
+    //
+    //            25 -> 2e -> 12.5 -> 0.1
+    //            60 -> 3e -> 20 -> 0.05
+    //
+    //
+    //
+    //
 
     article.appendChild(img);
     article.appendChild(br);
@@ -208,8 +227,47 @@ function load(name) {
 
 }
 
-function search() {
-  load(document.getElementById("search").value.toLowerCase());
+function countPrice(x) {
+  switch (x) {
+    case "Diamond Block":
+      return 9;
+      break;
+    case "Diamond":
+      return 1;
+      break;
+    case "Iron Block":
+      return 1;
+      break;
+    case "Iron Ingot":
+      return 1 / 9;
+      break;
+    case "Iron Nugget":
+      return 1 / 9 / 9;
+      break;
+    case "Gold Ingot":
+      return 1 / 3;
+      break;
+    case "Gold Block":
+      return 9 / 3;
+      break;
+    case "Gold Nugget":
+      return 1 / 3 / 9;
+      break;
+    case "Gratuit":
+      return 0;
+      break;
+    case "Emerald Block":
+      return 1 / 9 / 9;
+      break;
+    case "Emerald Block":
+      return 1 / 9 / 9 / 9;
+      break;
+    default:
+      return 1 / 9;
+
+
+
+  }
 }
 
 

@@ -7,12 +7,12 @@
   <title></title>
 </head>
 
-<body>
+<body onload="init()">
 
 
   <header>
     <h1><a href="index.html">PMC MARKET</a></h1>
-      <!-- <h1>PMC MARKET</h1> -->
+    <!-- <h1>PMC MARKET</h1> -->
 
     <h3>Prix</h3>
 
@@ -47,9 +47,21 @@
 
     <div id="search_area">
 
-      <input type="text" id="search" placeholder="Recherche" onkeyup="search()">
+      <input type="text" id="search" placeholder="Recherche" onkeyup="load()">
+
+
+
+      <div class="select_div">
+        <select id="filter" onchange="load()">
+          <option value="lower">Le moins chers</option>
+          <option value="upper">Le plus chers</option>
+        </select>
+      </div>
+
 
     </div>
+
+
 
     <div id="items">
 
