@@ -7,7 +7,7 @@ var types = [];
 var fr = new Object;
 var en = new Object;
 var effects = ["Potion", "Tipped Arrow", "Splash Potion"];
-var tools = ["Sword", "Axe", "Shovel", "Hoe", "Trident", "Bow", "Crossbow", "Pickaxe", "Fishing Rod", "Shears", "Turtle Helmet", "Elytra"];
+var enchants = ["Sword", "Axe", "Shovel", "Hoe", "Trident", "Bow", "Crossbow", "Pickaxe", "Fishing Rod", "Shears", "Turtle Helmet", "Elytra", "Chestplate", "Leggings", "Helmet", "Boots"];
 
 console.log("version: " + version);
 
@@ -55,8 +55,17 @@ function init() {
 function pre() {
   base.forEach((item, i) => {
     var img = new Image();
-    if (String(tools).includes(item.gsx$produit.$t.split(" ").pop()) && item.gsx$caracteristique.$t) {
+    if (String(enchants).includes(item.gsx$produit.$t.split(" ").pop()) && item.gsx$caracteristique.$t) {
       img.src = "https://yxmna.github.io/mcapi/img/enchanted_" + en[item.gsx$produit.$t.toLowerCase().split(" ").join("_")].split(" ").join("_").toLowerCase() + ".png";
+
+    } else if (item.gsx$produit.$t == "Filled Map" && item.gsx$caracteristique.$t.split(" ").pop().startsWith("https://")) {
+
+      // img.src = "https://yxmna.github.io/mcapi/img/map.png";
+      img.src = item.gsx$caracteristique.$t.split(" ").pop();
+
+
+
+
     } else {
       img.src = "https://yxmna.github.io/mcapi/img/" + en[item.gsx$produit.$t.toLowerCase().split(" ").join("_")].split(" ").join("_").toLowerCase() + ".png";
     }
@@ -121,6 +130,9 @@ function load(name) {
     var line1 = document.createElement("h4");
     var line2 = document.createElement("h4");
     var br = document.createElement("br");
+    var extra_div = document.createElement("div");
+    var extra_img = document.createElement("img");
+    extra_img.classList.add("none");
 
     img = imgs[item.gsx$id.$t];
 
@@ -133,7 +145,7 @@ function load(name) {
       title.innerHTML = item.gsx$quantiteproduit.$t + " " + fr[item.gsx$produit.$t.split(" ").join("_").toLowerCase() + ".effect." + extra1.join("_").toLowerCase()] + " " + extra2;
 
 
-    } else if ("Filled Map".includes(item.gsx$produit.$t) && item.gsx$caracteristique) {
+    } else if ("Filled Map".includes(item.gsx$produit.$t) && item.gsx$caracteristique.$t) {
 
       var extra1 = item.gsx$caracteristique.$t.split(" ");
       var extra2 = extra1.pop();
@@ -146,6 +158,19 @@ function load(name) {
       // console.log(extra1);
       // console.log(extra2);
       title.innerHTML = item.gsx$quantiteproduit.$t + " " + fr[item.gsx$produit.$t.split(" ").join("_").toLowerCase()] + " " + item.gsx$caracteristique.$t;
+
+      // extra_img.src = item.gsx$caracteristique.$t.split(" ").pop();
+
+      if (item.gsx$produit.$t == "Filled Map" && item.gsx$caracteristique.$t.split(" ").pop().startsWith("https://")) {
+
+        extra_img.src = "https://yxmna.github.io/mcapi/img/map.png";
+        extra_img.classList.remove("none");
+      }
+
+
+    } else if (item.gsx$produit.$t == "Enchanted Book" && item.gsx$caracteristique.$t) {
+
+      title.innerHTML = item.gsx$quantiteproduit.$t + " " + item.gsx$caracteristique.$t;
 
 
 
@@ -185,16 +210,11 @@ function load(name) {
     article.classList.add(item.gsx$produit.$t.split(" ").join("_").toLowerCase());
     article.setAttribute("count", (item.gsx$quantiteprix.$t * countPrice(item.gsx$nameprice.$t)) / item.gsx$quantiteproduit.$t);
 
-
-    //
-    //            25 -> 2e -> 12.5 -> 0.1
-    //            60 -> 3e -> 20 -> 0.05
-    //
-    //
-    //
-    //
+    extra_div.classList.add("extra");
+    extra_div.appendChild(extra_img);
 
     article.appendChild(img);
+    article.appendChild(extra_div);
     article.appendChild(br);
     article.appendChild(title);
     article.appendChild(price);

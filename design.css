@@ -133,6 +133,7 @@ article {
   margin: 20px;
   padding: 10px;
   width: 225px;
+  position: relative;
 }
 
 article>* {
@@ -142,6 +143,7 @@ article>* {
 article>img {
   cursor: pointer;
   height: 125px;
+  width: 125px;
   filter: drop-shadow(9px 11px 7px rgba(0, 0, 0, .125));
 }
 
@@ -170,4 +172,21 @@ article h3 img {
 article h4 {
   font-size: 16px;
   font-size: larger;
+}
+
+.extra {
+  height: 69px;
+  width: 69px;
+  overflow: hidden;
+  position: absolute;
+  top: 65px;
+  right: 20px;
+}
+
+.extra img {
+  height: 100%;
+}
+
+.none {
+  display: none;
 }
