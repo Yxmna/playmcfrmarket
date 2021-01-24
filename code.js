@@ -404,24 +404,21 @@ function click(x, db) {
     seller_shulker.innerHTML = "❌ Emplacement Shulker";
   }
   if (shop.gsx$forum.$t) {
-    console.log(shop.gsx$forum.$t);
     seller_forum.href = shop.gsx$forum.$t;
     seller_forum.innerHTML = "Liens forum";
   }
   if (shop.gsx$discord.$t) {
-    console.log(shop.gsx$discord.$t);
     seller_discord.href = shop.gsx$discord.$t;
     seller_discord.innerHTML = "Liens discord";
   }
   if (shop.gsx$dynmap.$t) {
-    console.log(shop.gsx$dynmap.$t);
     seller_dynmap.href = shop.gsx$dynmap.$t;
     seller_dynmap.innerHTML = "Liens dynmap";
   }
 
   var frame = document.createElement("iframe");
   frame.id = "frame";
-  frame.src = "http://dynmap.play-mc.fr:1872/?worldname=monde2&nopanel=true&nogui=true&mapname=perspective2&zoom=5&x=" + shop.gsx$overworldx.$t + "&y=64&z=" + shop.gsx$overworldy.$t;
+  frame.src = "https://dynmap.play-mc.fr:1872/?worldname=monde2&nopanel=true&nogui=true&mapname=perspective2&zoom=5&x=" + shop.gsx$overworldx.$t + "&y=64&z=" + shop.gsx$overworldy.$t;
   document.getElementById("frame_div").appendChild(frame);
 
 
