@@ -13,60 +13,81 @@
   <header>
     <h1><a href="index.html">PMC MARKET</a></h1>
     <!-- <h1>PMC MARKET</h1> -->
-
     <h3>Prix</h3>
-
     <div class="select_div">
-      <select id="prices" onchange="load()">
+      <select id="select_prices" onchange="load()">
         <option value="">Tout</option>
       </select>
     </div>
-
-
     <h3>Magasin</h3>
-
     <div class="select_div">
-      <select id="shops" onchange="load()">
+      <select id="select_shops" onchange="load()">
         <option value="">Tout</option>
       </select>
     </div>
-
-
     <h3>Type de magasin</h3>
-
     <div class="select_div">
-      <select id="types" onchange="load()">
+      <select id="select_types" onchange="load()">
         <option value="">Tout</option>
       </select>
     </div>
-
-
   </header>
+
 
   <div id="content">
 
     <div id="search_area">
-
       <input type="text" id="search" placeholder="Recherche" onkeyup="load()">
-
-
-
       <div class="select_div">
         <select id="filter" onchange="load()">
           <option value="lower">Le moins chers</option>
           <option value="upper">Le plus chers</option>
         </select>
       </div>
-
-
     </div>
 
-
-
     <div id="items">
+    </div>
 
-
-
+    <div id="shadow" onclick="" class="none">
+      <div id="window">
+        <h3 id="back" onclick="back()">Fermer</h3>
+        <div id="product">
+          <img id="product_img" src="https://yxmna.github.io/mcapi/img/missing.png">
+          <div>
+            <h1 id="product_name">product_name</h1>
+            <ul id="product_content">
+              <li>0 <img src="">product_content</li>
+            </ul>
+          </div>
+          <div>
+            <h1>Prix</h1>
+            <ul id="product_price">
+              <li>0 <img src="">product_price</li>
+            </ul>
+          </div>
+        </div>
+        <div id="shop">
+          <h3 id="shop_type">Type de commerce: </h3>
+          <h3 id="shop_own">Propriétaire: </h3>
+        </div>
+        <div id="seller">
+          <div>
+            <h1 id="seller_name"></h1>
+            <h2 id="seller_coo"></h2>
+            <h2 id="seller_description"></h2>
+            <br>
+            <h3 id="seller_king"></h3>
+            <h3 id="seller_enderchest"></h3>
+            <h3 id="seller_shulker"></h3>
+            <h3 id="seller_foundation"></h3>
+            <h3> <a id="seller_forum" href="#">Liens forum</a> </h3>
+            <h3> <a id="seller_discord" href="#">Liens discord</a> </h3>
+            <h3> <a id="seller_dynmap" href="#">Liens dynmap</a> </h3>
+          </div>
+          <div id="frame_div"></div>
+        </div>
+      </div>
     </div>
 
   </div>

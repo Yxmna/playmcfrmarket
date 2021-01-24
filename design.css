@@ -30,10 +30,33 @@
   outline: none;
 }
 
-a {
+h1 {
+  font-size: 30px;
+  color: white;
+}
+
+h2, li {
+  font-size: 20px;
+  color: #829A9C;
+}
+
+h3 {
+  font-size: 17px;
+  color: #829A9C;
+}
+
+h1 a {
   color: white;
   text-decoration: none;
   font-weight: 600;
+}
+
+a {
+  color: cornflowerblue;
+  text-decoration: none;
+  font-weight: 600;
+  text-decoration: underline;
+  font-weight: 400;
 }
 
 body {
@@ -134,6 +157,14 @@ article {
   padding: 10px;
   width: 225px;
   position: relative;
+  transition: all .25s;
+  cursor: pointer;
+}
+
+article:hover {
+  filter: brightness(110%);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.25);
 }
 
 article>* {
@@ -141,7 +172,6 @@ article>* {
 }
 
 article>img {
-  cursor: pointer;
   height: 125px;
   width: 125px;
   filter: drop-shadow(9px 11px 7px rgba(0, 0, 0, .125));
@@ -154,7 +184,6 @@ article h2, article h3, article h4 {
 }
 
 article h2 {
-  cursor: pointer;
   color: white;
   font-size: 20px;
   width: 85%;
@@ -165,7 +194,7 @@ article h2 {
 
 article h3 img {
   height: 20px;
-  vertical-align: sub;
+  vertical-align: bottom;
   filter: drop-shadow(9px 11px 7px rgba(0, 0, 0, .125));
 }
 
@@ -188,5 +217,96 @@ article h4 {
 }
 
 .none {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#window {
+  box-shadow: 0 0 40px -15px black;
+  background: #24292E;
+  height: 75%;
+  width: 45%;
+  margin-top: calc(25% / 4);
+  margin-left: 25%;
+  overflow: auto;
+  padding: 2%;
+  padding-right: 4%;
+  margin-left: auto;
+  margin-right: auto;
+  transition: transform .5s, opacity .125s;
+}
+
+#shadow {
+  background: #0000006e;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  transition: all .25s;
+}
+
+.none #window {
+  /* transform: scale(2); */
+}
+
+.clicked {
+  /* overflow: hidden;
+  height: calc(100vh - 87px); */
+}
+
+#back {
+  color: #829A9C;
+  background-color: #21252B;
+  cursor: pointer;
+  padding: 7px 15px;
+  display: inline-flex;
+  border-radius: 7px;
+  user-select: none;
+}
+
+#back:hover {
+  filter: brightness(96%);
+}
+
+#window>div {
+  margin-top: calc(69px - 5%);
+}
+
+#product {
+  display: flex;
+  color: white;
+}
+
+#product>* {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 37%;
+}
+
+#product #product_img {
+  height: 150px;
+  width: 150px;
+}
+
+#product_content img, #product_price img {
+  height: 28px;
+  width: auto;
+  vertical-align: bottom;
+  filter: drop-shadow(9px 11px 7px rgba(0, 0, 0, .125));
+}
+
+
+#seller {
+  display: flex;
+  margin-bottom: 69px;
+}
+
+#frame_div {
+  margin-left: auto;
+}
+
+#frame {
+  border: none;
+  height: 100%;
 }
