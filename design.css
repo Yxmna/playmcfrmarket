@@ -226,7 +226,7 @@ article h4 {
   background: #24292E;
   height: 75%;
   width: 45%;
-  margin-top: calc(25% / 4);
+  margin-top: calc((25% / 4) - 2%);
   margin-left: 25%;
   overflow: auto;
   padding: 2%;
@@ -296,10 +296,11 @@ article h4 {
   filter: drop-shadow(9px 11px 7px rgba(0, 0, 0, .125));
 }
 
-
 #seller {
   display: flex;
   margin-bottom: 69px;
+  border-top: solid 1px #1F2228;
+  padding-top: calc(69px - 5%);
 }
 
 #frame_div {

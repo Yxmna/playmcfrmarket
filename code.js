@@ -416,10 +416,10 @@ function click(x, db) {
     seller_dynmap.innerHTML = "Liens dynmap";
   }
 
-  var frame = document.createElement("iframe");
-  frame.id = "frame";
-  frame.src = "http://dynmap.play-mc.fr:1872/?worldname=monde2&nopanel=true&nogui=true&mapname=perspective2&zoom=5&x=" + shop.gsx$overworldx.$t + "&y=64&z=" + shop.gsx$overworldy.$t;
-  document.getElementById("frame_div").appendChild(frame);
+  // var frame = document.createElement("iframe");
+  // frame.id = "frame";
+  // frame.src = "http://dynmap.play-mc.fr:1872/?worldname=monde2&nopanel=true&nogui=true&mapname=perspective2&zoom=5&x=" + shop.gsx$overworldx.$t + "&y=64&z=" + shop.gsx$overworldy.$t;
+  // document.getElementById("frame_div").appendChild(frame);
 
 
 
