@@ -8,7 +8,7 @@ var select_prices = [],
 var fr = new Object;
 var en = new Object;
 var effects = ["Potion", "Tipped Arrow", "Splash Potion"];
-var enchants = ["Sword", "Axe", "Shovel", "Hoe", "Trident", "Bow", "Crossbow", "Pickaxe", "Fishing Rod", "Shears", "Turtle Helmet", "Elytra", "Chestplate", "Leggings", "Helmet", "Boots"];
+var enchants = ["Book", "Sword", "Axe", "Shovel", "Hoe", "Trident", "Bow", "Crossbow", "Pickaxe", "Fishing Rod", "Shears", "Turtle Helmet", "Elytra", "Chestplate", "Leggings", "Helmet", "Boots"];
 
 console.log("version: " + version);
 
@@ -61,7 +61,7 @@ function pre() {
     var img = new Image();
     var img2 = new Image();
     // SI ENCHANT
-    if (String(enchants).includes(item.gsx$produit.$t.split(" ").pop()) && item.gsx$caracteristique.$t) {
+    if (String(enchants).includes(item.gsx$produit.$t.split(" ").pop()) && item.gsx$caracteristique.$t && item.gsx$produit.$t != "Enchanted Book") {
       img.src = "https://yxmna.github.io/mcapi/img/enchanted_" + en[item.gsx$produit.$t.toLowerCase().split(" ").join("_")].split(" ").join("_").toLowerCase() + ".png";
       // SI MAPART
     } else if (item.gsx$produit.$t == "Filled Map" && item.gsx$caracteristique.$t.split(" ").pop().startsWith("https://")) {
@@ -118,7 +118,7 @@ function load(name) {
     db.sort((item2, item1) => ((item1.gsx$quantiteprix.$t * countPrice(item1.gsx$nameprice.$t)) / item1.gsx$quantiteproduit.$t.split(" ")[0]) - ((item2.gsx$quantiteprix.$t * countPrice(item2.gsx$nameprice.$t)) / item2.gsx$quantiteproduit.$t.split(" ")[0]));
   }
   // FILTER BY SELECT
-  if (document.getElementById("select_prices").value) db = db.filter(item => item.gsx$nomprix.$t.includes(document.getElementById("select_prices").value));
+  if (document.getElementById("select_prices").value) db = db.filter(item => fr[item.gsx$nameprice.$t.split(" ").join("_").toLowerCase()] == (document.getElementById("select_prices").value));
   if (document.getElementById("select_shops").value) db = db.filter(item => item.gsx$commerce.$t.includes(document.getElementById("select_shops").value));
   if (document.getElementById("select_types").value) db = db.filter(item => item.gsx$typevente.$t.includes(document.getElementById("select_types").value));
 
@@ -130,8 +130,8 @@ function load(name) {
     if (!select_shops.includes(item.gsx$commerce.$t) && item.gsx$commerce.$t) {
       select_shops.push(item.gsx$commerce.$t);
     }
-    if (!select_prices.includes(item.gsx$nomprix.$t) && item.gsx$nomprix.$t) {
-      select_prices.push(item.gsx$nomprix.$t);
+    if (!select_prices.includes(fr[item.gsx$nameprice.$t.toLowerCase().split(" ").join("_")]) && fr[item.gsx$nameprice.$t.toLowerCase().split(" ").join("_")]) {
+      select_prices.push(fr[item.gsx$nameprice.$t.toLowerCase().split(" ").join("_")]);
     }
     // VAR
     var article = document.createElement("article");
@@ -178,8 +178,12 @@ function load(name) {
       // item.gsx$produit.$t = "Shulker Box";
       // IF BOOK ENCHANT
     } else if (item.gsx$produit.$t == "Enchanted Book" && item.gsx$caracteristique.$t) {
-      title.innerHTML = item.gsx$quantiteproduit.$t + " " + item.gsx$caracteristique.$t;
+      var extra1 = item.gsx$caracteristique.$t.split(" ");
+      var extra2 = extra1.pop();
+      extra1 = extra1.join("_").toLowerCase();
+      title.innerHTML = item.gsx$quantiteproduit.$t + " " + fr["enchantment.minecraft." + extra1] + " " + fr["enchantment.level." + extra2];
       // ELSE
+
     } else {
       if (fr[item.gsx$produit.$t.split(" ").join("_").toLowerCase()]) {
         title.innerHTML = item.gsx$quantiteproduit.$t + " " + fr[item.gsx$produit.$t.split(" ").join("_").toLowerCase()];
@@ -199,7 +203,7 @@ function load(name) {
       price.innerHTML = item.gsx$quantiteprix.$t + " ";
       img_price = imgs[item.gsx$id.$t].s;
       price.appendChild(img_price);
-      price.innerHTML = price.innerHTML + " " + item.gsx$nomprix.$t;
+      price.innerHTML = price.innerHTML + " " + fr[item.gsx$nameprice.$t.toLowerCase().split(" ").join("_")];
     }
 
     // ID
@@ -358,6 +362,7 @@ function click(x, db) {
 
   // CONTENT
   var li = document.createElement("li");
+  // IF KIT
   if (db[x].gsx$produit.$t.startsWith("Kit")) {
     li.innerHTML = db[x].gsx$quantiteproduit.$t + " <img src='https://yxmna.github.io/mcapi/img/shulker_box.png'> " + fr["shulker_box"] + " (" + en["shulker_box"] + ")";
   } else {
@@ -367,6 +372,7 @@ function click(x, db) {
   if (db[x].gsx$caracteristique.$t) {
     // console.log(db[x].gsx$caracteristique.$t);
     db[x].gsx$caracteristique.$t.split(", ").forEach((item, i) => {
+      // IF KIT
       if (db[x].gsx$produit.$t.startsWith("Kit")) {
         var li = document.createElement("li");
         var name = item.split(" ");
@@ -375,12 +381,22 @@ function click(x, db) {
         if (item.includes("Enchanted")) {
           li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/enchanted_" + en[name.split("Enchanted ")[1].toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split("Enchanted ")[1].split(" ").join("_").toLowerCase()] + " enchanté (Enchanted " + en[name.split("Enchanted ")[1].split(" ").join("_").toLowerCase()] + ")";
         } else if (item.includes("Potion")) {
-          console.log(name);
-          console.log(name.split("Potion ")[1].split(" ").join("_").toLowerCase());
           li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/potion.png'> " + fr["potion.effect." + name.split("Potion ")[1].split(" ").join("_").toLowerCase()] + "  (" + en["potion.effect." + name.split("Potion ")[1].split(" ").join("_").toLowerCase()] + ")";
         } else {
           li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/" + en[name.toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split(" ").join("_").toLowerCase()] + " (" + en[name.split(" ").join("_").toLowerCase()] + ")";
         }
+        // IF ENCHANT
+      } else if (String(enchants).includes(db[x].gsx$produit.$t.split(" ").pop())) {
+        console.log("ENCHANT");
+        var li = document.createElement("li");
+        var name = item.split(" ");
+        var number = name.pop();
+        name = name.join("_").toLowerCase();
+        number = en["enchantment.level." + number];
+        // if (item = "Enchanted Book") {
+        //   li.innerHTML = "<img src='https://yxmna.github.io/mcapi/img/enchanted_book.png'> " + fr["enchantment.minecraft." + name] + " " + number + " (" + en["enchantment.minecraft." + name] + ")";
+        // }
+        li.innerHTML = "<img src='https://yxmna.github.io/mcapi/img/enchanted_book.png'> " + fr["enchantment.minecraft." + name] + " " + number + " (" + en["enchantment.minecraft." + name] + ")";
       }
       product_content.appendChild(li);
     });
