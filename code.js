@@ -374,6 +374,10 @@ function click(x, db) {
         name = name.join(" ");
         if (item.includes("Enchanted")) {
           li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/enchanted_" + en[name.split("Enchanted ")[1].toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split("Enchanted ")[1].split(" ").join("_").toLowerCase()] + " enchanté (Enchanted " + en[name.split("Enchanted ")[1].split(" ").join("_").toLowerCase()] + ")";
+        } else if (item.includes("Potion")) {
+          console.log(name);
+          console.log(name.split("Potion ")[1].split(" ").join("_").toLowerCase());
+          li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/potion.png'> " + fr["potion.effect." + name.split("Potion ")[1].split(" ").join("_").toLowerCase()] + "  (" + en["potion.effect." + name.split("Potion ")[1].split(" ").join("_").toLowerCase()] + ")";
         } else {
           li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/" + en[name.toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split(" ").join("_").toLowerCase()] + " (" + en[name.split(" ").join("_").toLowerCase()] + ")";
         }
