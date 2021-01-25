@@ -1,7 +1,7 @@
 var url = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/4/public/values?alt=json";
 var url2 = "https://spreadsheets.google.com/feeds/list/1fpwqMhe0DqP3LGV7mj6PcICzteFacqnhgXGzXdZkyss/2/public/values?alt=json";
 var imgs = [];
-var version = "0.6";
+var version = "0.7";
 var select_prices = [],
   select_shops = [],
   select_types = [];
@@ -175,7 +175,7 @@ function load(name) {
       // IF SHULKER
     } else if (item.gsx$produit.$t.startsWith("Kit")) {
       title.innerHTML = item.gsx$quantiteproduit.$t + " " + item.gsx$produit.$t;
-      item.gsx$produit.$t = "Shulker Box";
+      // item.gsx$produit.$t = "Shulker Box";
       // IF BOOK ENCHANT
     } else if (item.gsx$produit.$t == "Enchanted Book" && item.gsx$caracteristique.$t) {
       title.innerHTML = item.gsx$quantiteproduit.$t + " " + item.gsx$caracteristique.$t;
@@ -341,7 +341,11 @@ function click(x, db) {
   // GERANT
   shop_own.innerHTML = "Propriétaire: " + db[x].gsx$proprietaire.$t;
   // NAME
-  product_name.innerHTML = fr[db[x].gsx$produit.$t.split(" ").join("_").toLowerCase()];
+  if (db[x].gsx$produit.$t.startsWith("Kit")) {
+    product_name.innerHTML = db[x].gsx$produit.$t;
+  } else {
+    product_name.innerHTML = fr[db[x].gsx$produit.$t.split(" ").join("_").toLowerCase()];
+  }
   // PRICE
   if (db[x].gsx$quantiteprix.$t == 0) {
     product_price.innerHTML = "<li>Gratuit</li>";
@@ -354,12 +358,16 @@ function click(x, db) {
 
   // CONTENT
   var li = document.createElement("li");
-  li.innerHTML = db[x].gsx$quantiteproduit.$t + " <img src='https://yxmna.github.io/mcapi/img/" + en[db[x].gsx$produit.$t.toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[db[x].gsx$produit.$t.split(" ").join("_").toLowerCase()] + " (" + en[db[x].gsx$produit.$t.split(" ").join("_").toLowerCase()] + ")";
+  if (db[x].gsx$produit.$t.startsWith("Kit")) {
+    li.innerHTML = db[x].gsx$quantiteproduit.$t + " <img src='https://yxmna.github.io/mcapi/img/shulker_box.png'> " + fr["shulker_box"] + " (" + en["shulker_box"] + ")";
+  } else {
+    li.innerHTML = db[x].gsx$quantiteproduit.$t + " <img src='https://yxmna.github.io/mcapi/img/" + en[db[x].gsx$produit.$t.toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[db[x].gsx$produit.$t.split(" ").join("_").toLowerCase()] + " (" + en[db[x].gsx$produit.$t.split(" ").join("_").toLowerCase()] + ")";
+  }
   product_content.appendChild(li);
   if (db[x].gsx$caracteristique.$t) {
     // console.log(db[x].gsx$caracteristique.$t);
     db[x].gsx$caracteristique.$t.split(", ").forEach((item, i) => {
-      if (db[x].gsx$produit.$t == "Shulker Box") {
+      if (db[x].gsx$produit.$t.startsWith("Kit")) {
         var li = document.createElement("li");
         var name = item.split(" ");
         var count = name.shift();
