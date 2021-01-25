@@ -372,7 +372,11 @@ function click(x, db) {
         var name = item.split(" ");
         var count = name.shift();
         name = name.join(" ");
-        li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/" + en[name.toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split(" ").join("_").toLowerCase()] + " (" + en[name.split(" ").join("_").toLowerCase()] + ")";
+        if (item.includes("Enchanted")) {
+          li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/enchanted_" + en[name.split("Enchanted ")[1].toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split("Enchanted ")[1].split(" ").join("_").toLowerCase()] + " enchanté (Enchanted " + en[name.split("Enchanted ")[1].split(" ").join("_").toLowerCase()] + ")";
+        } else {
+          li.innerHTML = count + " <img src='https://yxmna.github.io/mcapi/img/" + en[name.toLowerCase().split(" ").join("_")].toLowerCase().split(" ").join("_") + ".png'> " + fr[name.split(" ").join("_").toLowerCase()] + " (" + en[name.split(" ").join("_").toLowerCase()] + ")";
+        }
       }
       product_content.appendChild(li);
     });
