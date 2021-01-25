@@ -56,6 +56,7 @@ function init() {
 
 // --------------------------------------------------------------------------------------------------------PRELOAD
 function pre() {
+  document.getElementById("search").value = "";
   base.forEach((item, i) => {
     var img = new Image();
     var img2 = new Image();
@@ -90,7 +91,6 @@ function pre() {
 
 // --------------------------------------------------------------------------------------------------------LOAD
 function load(name) {
-  document.getElementById("search").value = "";
   // REMOVE WINDOW
   if (String(document.getElementById("items").classList).includes("none")) {
     document.getElementById("shadow").classList.add("none");
