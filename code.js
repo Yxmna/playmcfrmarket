@@ -7,7 +7,7 @@ const fetch_option = {
   }
 }
 var imgs = [];
-var version = "0.9";
+var version = "0.8.1";
 var select_prices = [],
   select_shops = [],
   select_types = [];
