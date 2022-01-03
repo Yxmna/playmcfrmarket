@@ -7,7 +7,7 @@ const fetch_option = {
   }
 }
 var imgs = [];
-var version = "0.8";
+var version = "0.9";
 var select_prices = [],
   select_shops = [],
   select_types = [];
@@ -190,7 +190,7 @@ function pre() {
       img.src = "https://yxmna.github.io/mcapi/img/orange_shulker_box.png";
       // SINON
     } else {
-      img.src = "https://yxmna.github.io/mcapi/img/" + en[item.nom_produit.toLowerCase().split(" ").join("_")].split(" ").join("_").toLowerCase() + ".png";
+      img.src = "https://yxmna.github.io/mcapi/img/" + (en[item.nom_produit.toLowerCase().split(" ").join("_")] ?? "err").split(" ").join("_").toLowerCase() + ".png";
     }
     if (item.nom_prix == "Free") {
       img2.src = "";
@@ -198,7 +198,7 @@ function pre() {
       img2.src = "https://yxmna.github.io/mcapi/img/" + en[item.nom_prix.toLowerCase().split(" ").join("_")].split(" ").join("_").toLowerCase() + ".png";
     }
     img.onerror = function() {
-      // img.src = "https://yxmna.github.io/mcapi/img/missing.png";
+      img.src = "https://yxmna.github.io/mcapi/img/missing.png";
     };
     imgs[item.ID] = {
       "p": img,
